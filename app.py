@@ -61,6 +61,16 @@ st.markdown("""
         border-radius: 10px;
         padding: 15px;
         border-left: 4px solid #667eea;
+        color: #1a1a2e;
+    }
+    div[data-testid="stMetric"] label {
+        color: #333 !important;
+    }
+    div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+        color: #1a1a2e !important;
+    }
+    div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
+        color: #555 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -86,7 +96,7 @@ def clean_data(df: pd.DataFrame, date_col: str, sales_col: str) -> pd.DataFrame:
     df.columns = ["Date", "Sales"]
 
     # Convert to datetime
-    df["Date"] = pd.to_datetime(df["Date"], infer_datetime_format=True, errors="coerce")
+    df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
     df.dropna(subset=["Date"], inplace=True)
 
     # Convert sales to numeric
@@ -97,8 +107,8 @@ def clean_data(df: pd.DataFrame, date_col: str, sales_col: str) -> pd.DataFrame:
     df.reset_index(drop=True, inplace=True)
 
     # Handle missing values – forward fill then backward fill
-    df["Sales"].fillna(method="ffill", inplace=True)
-    df["Sales"].fillna(method="bfill", inplace=True)
+    df["Sales"] = df["Sales"].ffill()
+    df["Sales"] = df["Sales"].bfill()
 
     # Drop any remaining NaN rows
     df.dropna(inplace=True)
