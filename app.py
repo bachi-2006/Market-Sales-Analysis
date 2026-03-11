@@ -1,10 +1,3 @@
-"""
-Sales Forecasting using Time Series Analysis
-=============================================
-A Streamlit application that predicts future sales using statistical
-time-series models: Moving Average, ARIMA, and Exponential Smoothing.
-"""
-
 import streamlit as st
 import pandas as pd
 import numpy as np
